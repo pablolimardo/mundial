@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundial de Funciones · Taller de Programación 3°2° · Escuela Industrial N°9</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f6f3;--bg2:#e6ede8;--bg3:#d8e4db;--card:#fff;
+  --gr:#166534;--gr2:#14532d;--gr3:#dcfce7;--gr4:#f0fdf4;
+  --dk:#0f2318;--muted:#5a7a62;--border:#c6dbc9;--dim:#dde8df;--txt:#0f2318;
+  --am:#b45309;--am2:#78350f;--am3:#fef3c7;--am4:#fffbeb;
+  --bl:#1d4ed8;--bl3:#dbeafe;--bl4:#eff6ff;
+  --or:#c2410c;--or3:#ffedd5;--or4:#fff7ed;
+  --re:#b91c1c;--re3:#fee2e2;
+  --cy:#0e7490;--cy3:#cffafe;--cy4:#f0fdff;
+  --go:#a16207;--go3:#fef9c3;--go4:#fefce8;
+  --mono:"IBM Plex Mono",monospace;--sans:"Plus Jakarta Sans",sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0a140d;--bg2:#0f1c12;--bg3:#152418;--card:#0c1810;
+  --gr:#22d3a0;--gr2:#16a87e;--gr3:#062414;--gr4:#041008;
+  --dk:#e8f5ec;--muted:#4a6450;--border:#1a3020;--dim:#152418;--txt:#d0e8d4;
+  --am:#f0a030;--am2:#d4820a;--am3:#2a1a06;--am4:#1c1208;
+  --bl:#60a5fa;--bl3:#1e3a5f;--bl4:#0f1f40;
+  --or:#fb923c;--or3:#431407;--or4:#2c0e04;
+  --re:#fca5a5;--re3:#1f0a0a;
+  --cy:#22d3ee;--cy3:#0a3040;--cy4:#061820;
+  --go:#facc15;--go3:#2a2306;--go4:#1c1804;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);font-size:16px;line-height:1.7;overflow-x:hidden;}
+
+.topbar{position:sticky;top:0;z-index:300;background:var(--card);border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center;padding:8px 16px;}
+.tb-brand{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tb-brand b{color:var(--dk);}
+.tb-acts{display:flex;gap:6px;flex-shrink:0;}
+.tbtn{background:var(--bg2);border:1.5px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:5px 11px;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tbtn:hover{border-color:var(--gr);color:var(--gr);}
+
+.hero{background:#0f2318;padding:44px 16px 36px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;border:1px solid rgba(255,255,255,.04);pointer-events:none;}
+.hero-in{max-width:900px;margin:0 auto;position:relative;z-index:2;}
+.hero-eye{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.eye-dot{width:6px;height:6px;border-radius:50%;background:var(--gr);box-shadow:0 0 8px var(--gr);animation:pulse 2s ease infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:clamp(24px,6vw,46px);font-weight:800;color:#fff;line-height:1.05;margin-bottom:10px;letter-spacing:-.5px;}
+.h-gr{color:#86efac;}.h-go{color:#fde047;}
+.hero-desc{color:rgba(255,255,255,.5);font-size:14px;max-width:560px;margin-bottom:20px;}
+.hero-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);}
+.tag-gr{border-color:rgba(134,239,172,.35);color:rgba(134,239,172,.85);}
+.tag-go{border-color:rgba(253,224,71,.35);color:rgba(253,224,71,.85);}
+.tag-bl{border-color:rgba(96,165,250,.3);color:rgba(96,165,250,.8);}
+
+nav{background:var(--card);border-bottom:2px solid var(--border);position:sticky;top:45px;z-index:90;}
+.nav-in{max-width:900px;margin:0 auto;display:flex;overflow-x:auto;padding:0 12px;}
+.nav-in::-webkit-scrollbar{height:0;}
+.nb{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 11px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.nb:hover,.nb.on{color:var(--gr);border-bottom-color:var(--gr);}
+
+main{max-width:900px;margin:0 auto;padding:30px 16px 80px;}
+section{margin-bottom:60px;}
+.s-eye{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gr);margin-bottom:8px;}
+.s-h2{font-size:clamp(19px,3.5vw,27px);font-weight:800;color:var(--dk);margin-bottom:6px;}
+.s-sub{color:var(--muted);font-size:14px;margin-bottom:20px;max-width:600px;}
+.div{height:2px;background:linear-gradient(90deg,var(--gr),transparent);border-radius:2px;margin-bottom:22px;}
+.div-go{background:linear-gradient(90deg,var(--go),transparent);}
+
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:box-shadow .2s;}
+.card:hover{box-shadow:0 4px 14px rgba(22,101,52,.1);}
+.card-hdr{display:grid;grid-template-columns:48px 1fr;cursor:pointer;min-height:54px;}
+.card-ico{display:flex;align-items:center;justify-content:center;font-size:18px;border-right:1.5px solid var(--border);}
+.ico-gr{background:var(--gr4);}
+.ico-go{background:var(--go4);}
+.ico-bl{background:var(--bl4);}
+.card-inf{padding:11px 15px;}
+.card-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.card-tit{font-size:14px;font-weight:700;color:var(--dk);}
+.card-body{padding:2px 15px 16px;border-top:1.5px solid var(--border);display:none;}
+.card.open .card-body{display:block;}
+.card-body p{font-size:14px;color:var(--txt);margin:11px 0 5px;}
+
+.code{background:#0d1117;color:#e6edf3;border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:13.5px;margin:12px 0;line-height:1.6;white-space:pre-wrap;overflow-x:auto;border:1px solid rgba(255,255,255,0.1);box-shadow:inset 0 1px 4px rgba(0,0,0,0.2);}
+.cm{color:#8b949e;font-style:italic;}
+.kw{color:#ff7b72;font-weight:600;}
+.st{color:#a5d6ff;}.nm{color:#79c0ff;}.fn{color:#d2a8ff;font-weight:600;}
+
+.tbl-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;border-radius:8px;border:1px solid var(--border);}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{background:var(--bg2);color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:1.5px solid var(--border);white-space:nowrap;}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--dim);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--bg2);}
+.ch{display:inline-block;padding:2px 8px;border-radius:8px;font-family:var(--mono);font-size:10px;font-weight:600;}
+.ch-gr{background:var(--gr3);color:var(--gr2);}
+.ch-go{background:var(--go3);color:var(--go);}
+.ch-bl{background:var(--bl3);color:var(--bl);}
+
+.anal{border-radius:8px;padding:12px 15px;margin:10px 0;display:flex;gap:10px;font-size:14px;align-items:flex-start;background:var(--gr4);border-left:4px solid var(--gr);}
+.anal.go{background:var(--go4);border-left-color:var(--go);}
+.anal.bl{background:var(--bl4);border-left-color:var(--bl);}
+.an-ico{font-size:20px;flex-shrink:0;}
+
+.nota{background:var(--bl4);border:1.5px solid var(--bl3);border-left:4px solid var(--bl);border-radius:8px;padding:12px 15px;margin:10px 0;font-size:14px;}
+.nota b{color:var(--bl);}
+.alerta{background:var(--am4);border:1.5px solid var(--am3);border-left:4px solid var(--am);border-radius:8px;padding:12px 15px;margin:10px 0;font-size:14px;}
+.alerta b{color:var(--am);}
+.tip{background:var(--gr4);border:1.5px solid var(--gr3);border-left:4px solid var(--gr2);border-radius:7px;padding:10px 14px;margin:10px 0;font-size:13px;color:var(--gr2);}
+
+.mision{background:var(--gr4);border:1.5px solid var(--gr3);border-left:5px solid var(--gr);border-radius:10px;padding:14px 17px;margin:12px 0;}
+.mision.go{background:var(--go4);border-color:var(--go3);border-left-color:var(--go);}
+.mision.bl{background:var(--bl4);border-color:var(--bl3);border-left-color:var(--bl);}
+.mision-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.mision-num{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;background:var(--gr3);color:var(--gr2);padding:2px 10px;border-radius:12px;}
+.mision.go .mision-num{background:var(--go3);color:var(--go);}
+.mision.bl .mision-num{background:var(--bl3);color:var(--bl);}
+.mision-tit{font-size:15px;font-weight:700;color:var(--dk);}
+.mision p{font-size:14px;color:var(--txt);margin:4px 0;}
+
+.ejercicio{background:var(--card);border:1.5px dashed var(--border);border-radius:10px;padding:14px 17px;margin:12px 0;}
+.ej-hdr{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gr2);margin-bottom:8px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.ej-list{font-size:14px;color:var(--txt);}
+.ej-list li{margin:6px 0 6px 18px;}
+.checklist{list-style:none;margin:10px 0;}
+.checklist li{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:8px 0;padding:0;}
+.checklist li::before{content:"☐";color:var(--gr);font-size:16px;flex-shrink:0;}
+
+.timeline{display:flex;flex-direction:column;gap:0;margin:14px 0;}
+.tl-item{display:flex;gap:14px;align-items:flex-start;padding-bottom:20px;position:relative;}
+.tl-item::before{content:'';position:absolute;left:16px;top:34px;bottom:0;width:2px;background:var(--dim);}
+.tl-item:last-child::before{display:none;}
+.tl-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:2px solid;background:var(--gr3);border-color:var(--gr);}
+.tl-body{flex:1;padding-top:4px;}
+.tl-badge{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;color:var(--gr2);}
+.tl-tit{font-size:15px;font-weight:700;color:var(--dk);margin-bottom:4px;}
+.tl-items{font-size:13px;color:var(--muted);line-height:1.9;}
+.tl-items span{display:block;}
+.tl-items span::before{content:'› ';color:var(--gr);font-weight:700;}
+
+/* DEMO ESTADIO */
+.estadio-box{background:#0f2318;border-radius:12px;padding:20px;margin:14px 0;display:flex;flex-direction:column;gap:14px;border:1px solid rgba(255,255,255,0.05);}
+.est-lbl{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.est-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;}
+.est-grp{display:flex;flex-direction:column;gap:5px;}
+.est-gl{font-size:12px;color:rgba(255,255,255,.6);}
+.est-slider{width:150px;accent-color:var(--gr);}
+.est-btn{background:#22c55e;color:#06210f;border:none;font-family:var(--sans);font-size:13px;font-weight:700;padding:9px 16px;border-radius:6px;cursor:pointer;transition:background .2s;}
+.est-btn:hover{background:#16a34a;}
+.est-btn.alt{background:#facc15;color:#1c1808;}
+.est-btn.alt:hover{background:#eab308;}
+.est-marcador{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.est-val{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;text-align:center;}
+.est-vlabel{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.est-vnum{font-family:var(--mono);font-size:26px;font-weight:600;color:#fde047;}
+.est-out{background:#0d1117;color:#e6edf3;border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:12.5px;min-height:40px;white-space:pre-wrap;line-height:1.7;border:1px solid rgba(255,255,255,0.1);}
+
+footer{text-align:center;padding:26px;border-top:1.5px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:11px;background:var(--bg2);}
+footer b{color:var(--dk);}
+
+@media(max-width:640px){
+  .topbar{padding:7px 12px;}
+  .tb-brand{font-size:9px;}
+  .hero{padding:32px 14px 26px;}
+  h1{font-size:24px;}
+  main{padding:24px 14px 70px;}
+  .s-h2{font-size:19px;}
+  nav{top:44px;}
+  .nb{padding:9px 10px;font-size:9px;}
+  .card-hdr{grid-template-columns:42px 1fr;}
+  .est-marcador{grid-template-columns:1fr 1fr;}
+}
+@media(min-width:641px){
+  .hero{padding:50px 24px 40px;}
+  main{padding:36px 24px 90px;}
+}
+
+@media print{
+  @page{margin:1.8cm 1.5cm;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{background:#fff!important;color:#000!important;font-size:10.5pt;line-height:1.55;}
+  .topbar,nav,.estadio-box,.tbtn{display:none!important;}
+  .hero{background:#0f2318!important;padding:14pt 0 10pt!important;border-bottom:2pt solid #000;}
+  .hero::before{display:none!important;}
+  h1{color:#fff!important;font-size:18pt;}
+  .h-gr,.h-go{color:#fff!important;}
+  .hero-desc{color:rgba(255,255,255,.75)!important;font-size:10pt;}
+  section{break-inside:avoid;margin-bottom:12pt;}
+  .s-h2{font-size:13pt;color:#000!important;border-bottom:1pt solid #000;padding-bottom:2pt;}
+  .card{border:1pt solid #ccc!important;break-inside:avoid;}
+  .card-body{display:block!important;}
+  .code{background:#f8f8f8!important;color:#000!important;border:1pt solid #ddd!important;font-size:8pt!important;}
+  .mision,.ejercicio{break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand">Esc. Industrial N&deg;9 &middot; <b>Taller de Programaci&oacute;n 3&deg;2&deg; &middot; 2026</b></div>
+  <div class="tb-acts">
+    <button class="tbtn" id="themeBtn" onclick="toggleTheme()">&#9790; Oscuro</button>
+    <button class="tbtn" onclick="window.print()">&#128424; Imprimir</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="hero-eye"><span class="eye-dot"></span>Repaso T2 &middot; Funciones + Hardware &middot; Edici&oacute;n Mundial &#9917;</div>
+    <h1><span class="h-gr">Cabina T&eacute;cnica</span> del <span class="h-go">Mundial</span></h1>
+    <p class="hero-desc">Volvemos al ruedo despu&eacute;s de dos clases sin vernos. Repasamos <b>funciones</b> (def, par&aacute;metros, return) aplicadas a los componentes que ya armaron en Tinkercad: pulsador, potenci&oacute;metro, servo y encoder. Todo ambientado en un estadio del Mundial.</p>
+    <div class="hero-tags">
+      <span class="tag tag-gr">def / return / par&aacute;metros</span>
+      <span class="tag tag-gr">Modularizaci&oacute;n</span>
+      <span class="tag tag-go">Pulsador &rarr; VAR</span>
+      <span class="tag tag-go">Potenci&oacute;metro &rarr; Marcador</span>
+      <span class="tag tag-go">Servo &rarr; Festejo de gol</span>
+      <span class="tag tag-go">Encoder &rarr; Contador de pases</span>
+      <span class="tag tag-bl">pyFirmata</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-in">
+    <button class="nb on" onclick="ir('intro')">Recordemos</button>
+    <button class="nb" onclick="ir('m1')">M1 · VAR</button>
+    <button class="nb" onclick="ir('m2')">M2 · Marcador</button>
+    <button class="nb" onclick="ir('m3')">M3 · Festejo</button>
+    <button class="nb" onclick="ir('m4')">M4 · Pases</button>
+    <button class="nb" onclick="ir('integrador')">Integrador</button>
+    <button class="nb" onclick="ir('checklist')">Checklist</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══ INTRO / RECORDATORIO ═══════════════════════════ -->
+<section id="intro">
+  <div class="s-eye">// Antes de arrancar</div>
+  <h2 class="s-h2">¿Qué veníamos viendo?</h2>
+  <p class="s-sub">Repaso relámpago de las dos clases que nos perdimos, para arrancar todos parejos.</p>
+  <div class="div"></div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">&#9917;</div>
+      <div class="tl-body">
+        <div class="tl-badge">&#9646; Lo que ya sabían (T1)</div>
+        <div class="tl-tit">Variables, tipos, if/elif/else, for, while</div>
+        <div class="tl-items">
+          <span>Decisiones simples con if/elif/else</span>
+          <span>Repetir un número fijo de veces con for</span>
+          <span>Repetir mientras se cumple una condición con while</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">&#128295;</div>
+      <div class="tl-body">
+        <div class="tl-badge">&#9646; Lo que vimos justo antes de la pausa</div>
+        <div class="tl-tit">Funciones — Módulo 08</div>
+        <div class="tl-items">
+          <span>def nombre(parámetros): agrupa código reutilizable</span>
+          <span>return devuelve un resultado y termina la función</span>
+          <span>Cada función hace UNA sola cosa, y la hace bien</span>
+          <span>En Tinkercad: armaron circuitos con pulsador, potenciómetro, servo y encoder</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mision">
+    <div class="mision-hdr"><span class="mision-num">El plan de hoy</span><span class="mision-tit">Armamos la Cabina Técnica del Mundial</span></div>
+    <p>Cada componente que ya probaron en Tinkercad se convierte en una <b>función</b> de nuestro sistema de cabina técnica para un partido del Mundial. Vamos a escribir 4 funciones — una por componente — y al final las combinamos en un programa principal.</p>
+  </div>
+
+  <div class="card open">
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-gr">&#128221;</div><div class="card-inf"><div class="card-tag">Repaso ultra rápido</div><div class="card-tit">Anatomía de una función</div></div></div>
+    <div class="card-body">
+      <div class="code"><span class="cm">#   ↓ def   ↓ nombre        ↓ parámetros (datos que recibe)</span>
+<span class="kw">def</span> <span class="fn">analizar_pulsador</span>(estado):
+    <span class="cm">#  ← cuerpo de la función, indentado</span>
+    <span class="kw">if</span> estado == <span class="nm">1</span>:
+        resultado = <span class="st">"GOL CONFIRMADO"</span>
+    <span class="kw">else</span>:
+        resultado = <span class="st">"SIN REVISIÓN"</span>
+    <span class="cm">#  ↓ return entrega un valor a quien llamó la función</span>
+    <span class="kw">return</span> resultado
+
+<span class="cm"># Llamada: el valor 1 va al parámetro "estado"</span>
+veredicto = <span class="fn">analizar_pulsador</span>(<span class="nm">1</span>)
+<span class="fn">print</span>(veredicto)   <span class="cm"># → GOL CONFIRMADO</span></div>
+      <div class="anal"><div class="an-ico">&#127947;&#65039;</div><div>Pensalo como el VAR: un solo procedimiento (la función) que se llama cada vez que hace falta revisar una jugada, sin tener que reescribir el reglamento completo cada vez.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MISIÓN 1: PULSADOR → VAR ═══════════════════════ -->
+<section id="m1">
+  <div class="s-eye">// Misión 1 · Componente: Pulsador</div>
+  <h2 class="s-h2">El VAR — función con un solo parámetro</h2>
+  <p class="s-sub">El pulsador que armaron en Tinkercad ahora es el botón del VAR: lo presiona el árbitro de video para confirmar o anular un gol.</p>
+  <div class="div"></div>
+
+  <div class="mision go">
+    <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
+    <p>El pulsador devuelve <code>1</code> cuando está presionado y <code>0</code> cuando no. En tu simulación lo leían con <code>pulsador.read()</code> (pyFirmata) o <code>digitalRead()</code> (Arduino C++). Hoy lo vamos a envolver en una función Python.</p>
+  </div>
+
+  <div class="card open">
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#128310;</div><div class="card-inf"><div class="card-tag">Función con 1 parámetro</div><div class="card-tit">var_check(estado_pulsador)</div></div></div>
+    <div class="card-body">
+      <div class="code"><span class="kw">def</span> <span class="fn">var_check</span>(estado_pulsador):
+    <span class="cm">"""Recibe el estado del pulsador (0 o 1) y devuelve el veredicto del VAR."""</span>
+    <span class="kw">if</span> estado_pulsador == <span class="nm">1</span>:
+        <span class="kw">return</span> <span class="st">"🟢 GOL CONFIRMADO"</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="st">"⚪ Esperando revisión..."</span>
+
+<span class="cm"># Simulación de lecturas del pulsador a lo largo del partido</span>
+lecturas = [<span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>]
+
+<span class="kw">for</span> lectura <span class="kw">in</span> lecturas:
+    veredicto = <span class="fn">var_check</span>(lectura)
+    <span class="fn">print</span>(veredicto)</div>
+      <div class="nota"><b>Conectá los puntos:</b> <code>var_check</code> es la misma lógica if/else de siempre, solo que ahora vive adentro de una función con nombre propio, lista para llamarse desde cualquier parte del programa.</div>
+    </div>
+  </div>
+
+  <div class="ejercicio">
+    <div class="ej-hdr">&#9997;&#65039; Ejercicio 1 — para resolver en la carpeta</div>
+    <ol class="ej-list">
+      <li>Modificá <code>var_check()</code> para que reciba <b>dos</b> parámetros: <code>estado_pulsador</code> y <code>minuto</code> (el minuto del partido).</li>
+      <li>Si el pulsador está en 1, el mensaje debe incluir el minuto: por ejemplo <code>"🟢 GOL CONFIRMADO en el minuto 73"</code>.</li>
+      <li>Probá la función con al menos 3 llamadas distintas, usando <code>print()</code>.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══ MISIÓN 2: POTENCIÓMETRO → MARCADOR ═════════════ -->
+<section id="m2">
+  <div class="s-eye">// Misión 2 · Componente: Potenciómetro</div>
+  <h2 class="s-h2">El Marcador — función con valores que cambian</h2>
+  <p class="s-sub">El potenciómetro que giraban en Tinkercad ahora regula el marcador del partido: cada vuelta suma un gol.</p>
+  <div class="div"></div>
+
+  <div class="mision go">
+    <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
+    <p>El potenciómetro devuelve un valor analógico (en pyFirmata, un número entre 0.0 y 1.0; en Arduino C++, entre 0 y 1023). Para este ejercicio simplificamos: vamos a mapear ese valor a un número de goles entre 0 y 5.</p>
+  </div>
+
+  <div class="card open">
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#127919;</div><div class="card-inf"><div class="card-tag">Función con return numérico</div><div class="card-tit">leer_marcador(valor_potenciometro)</div></div></div>
+    <div class="card-body">
+      <div class="code"><span class="kw">def</span> <span class="fn">leer_marcador</span>(valor_potenciometro):
+    <span class="cm">"""Convierte una lectura 0.0–1.0 del potenciómetro en goles (0 a 5)."""</span>
+    goles = <span class="fn">round</span>(valor_potenciometro * <span class="nm">5</span>)
+    <span class="kw">return</span> goles
+
+<span class="kw">def</span> <span class="fn">mostrar_resultado</span>(goles_local, goles_visitante):
+    <span class="cm">"""Recibe los goles de ambos equipos y arma el mensaje del marcador."""</span>
+    <span class="kw">if</span> goles_local > goles_visitante:
+        ganador = <span class="st">"🏆 Gana el Local"</span>
+    <span class="kw">elif</span> goles_visitante > goles_local:
+        ganador = <span class="st">"🏆 Gana el Visitante"</span>
+    <span class="kw">else</span>:
+        ganador = <span class="st">"🤝 Empate"</span>
+    <span class="kw">return</span> <span class="st">f"⚽ Local {goles_local} - {goles_visitante} Visitante  |  {ganador}"</span>
+
+<span class="cm"># Simulación: dos potenciómetros, uno por equipo</span>
+pot_local      = <span class="nm">0.62</span>
+pot_visitante  = <span class="nm">0.41</span>
+
+goles_l = <span class="fn">leer_marcador</span>(pot_local)
+goles_v = <span class="fn">leer_marcador</span>(pot_visitante)
+
+<span class="fn">print</span>(<span class="fn">mostrar_resultado</span>(goles_l, goles_v))</div>
+      <div class="anal go"><div class="an-ico">&#128260;</div><div>Fijate que <code>mostrar_resultado()</code> usa el <b>resultado</b> de <code>leer_marcador()</code> como entrada. Una función puede alimentarse de lo que devuelve otra — así arman sistemas completos, como en el proyecto de la maqueta.</div></div>
+    </div>
+  </div>
+
+  <!-- Simulador interactivo -->
+  <div class="estadio-box">
+    <div class="est-lbl">&#9654; Simulá los dos potenciómetros</div>
+    <div class="est-row">
+      <div class="est-grp"><div class="est-gl">Potenciómetro Local</div><input type="range" class="est-slider" id="potLocal" min="0" max="100" value="62" oninput="updateMarcador()"></div>
+      <div class="est-grp"><div class="est-gl">Potenciómetro Visitante</div><input type="range" class="est-slider" id="potVisit" min="0" max="100" value="41" oninput="updateMarcador()"></div>
+    </div>
+    <div class="est-marcador">
+      <div class="est-val"><div class="est-vlabel">Goles Local</div><div class="est-vnum" id="golLocal">3</div></div>
+      <div class="est-val"><div class="est-vlabel">Goles Visitante</div><div class="est-vnum" id="golVisit">2</div></div>
+    </div>
+    <div class="est-out" id="marcadorOut"></div>
+  </div>
+
+  <div class="ejercicio">
+    <div class="ej-hdr">&#9997;&#65039; Ejercicio 2 — para resolver en la carpeta</div>
+    <ol class="ej-list">
+      <li>Escribí una función <code>diferencia_goles(goles_local, goles_visitante)</code> que devuelva la diferencia en valor absoluto (usá <code>abs()</code>).</li>
+      <li>Usá esa función para imprimir un mensaje extra: si la diferencia es 3 o más, agregá <code>"📢 GOLEADA"</code> al resultado.</li>
+      <li>Probalo con los goles que te dio el simulador de arriba.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══ MISIÓN 3: SERVO → FESTEJO ══════════════════════ -->
+<section id="m3">
+  <div class="s-eye">// Misión 3 · Componente: Servo motor</div>
+  <h2 class="s-h2">El Festejo de Gol — función con parámetros por defecto</h2>
+  <p class="s-sub">El servo que movían entre 0° y 180° en Tinkercad ahora es el brazo mecánico que festeja cada gol.</p>
+  <div class="div"></div>
+
+  <div class="mision go">
+    <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
+    <p>El servo se controla con un ángulo entre 0° y 180°, usando PWM. En pyFirmata se escribe con <code>servo.write(angulo)</code>. Hoy escribimos la función que decide <b>qué tan fuerte</b> festejar según el tipo de gol.</p>
+  </div>
+
+  <div class="card open">
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#129302;</div><div class="card-inf"><div class="card-tag">Función con parámetro por defecto</div><div class="card-tit">festejar_gol(intensidad="normal")</div></div></div>
+    <div class="card-body">
+      <div class="code"><span class="kw">def</span> <span class="fn">festejar_gol</span>(intensidad=<span class="st">"normal"</span>):
+    <span class="cm">"""Calcula el ángulo del servo según la intensidad del festejo.
+       Si no se indica nada, usa "normal" por defecto."""</span>
+    <span class="kw">if</span> intensidad == <span class="st">"agónico"</span>:
+        angulo = <span class="nm">180</span>   <span class="cm"># festejo a pleno, último minuto</span>
+    <span class="kw">elif</span> intensidad == <span class="st">"normal"</span>:
+        angulo = <span class="nm">90</span>
+    <span class="kw">else</span>:
+        angulo = <span class="nm">45</span>    <span class="cm"># festejo contenido</span>
+
+    <span class="fn">print</span>(<span class="st">f"🦾 Servo se mueve a {angulo}° — festejo {intensidad}"</span>)
+    <span class="kw">return</span> angulo
+
+<span class="cm"># Tres formas de llamar a la misma función</span>
+<span class="fn">festejar_gol</span>(<span class="st">"agónico"</span>)   <span class="cm"># gol en el minuto 90+5</span>
+<span class="fn">festejar_gol</span>()              <span class="cm"># usa "normal" por defecto</span>
+<span class="fn">festejar_gol</span>(<span class="st">"contenido"</span>)</div>
+      <div class="nota"><b>Novedad de hoy:</b> <code>intensidad="normal"</code> en la definición es un <b>parámetro por defecto</b>. Si no le pasás nada al llamar la función, usa ese valor automáticamente. Es la primera vez que vemos esto — probalo en tu compilador.</div>
+    </div>
+  </div>
+
+  <div class="ejercicio">
+    <div class="ej-hdr">&#9997;&#65039; Ejercicio 3 — para resolver en la carpeta</div>
+    <ol class="ej-list">
+      <li>Agregale a <code>festejar_gol()</code> un segundo parámetro <code>repeticiones=1</code> (también por defecto).</li>
+      <li>Usá un <code>for</code> adentro de la función para repetir el mensaje de festejo esa cantidad de veces.</li>
+      <li>Llamá a la función de 3 formas distintas: sin argumentos, con un argumento, y con los dos.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══ MISIÓN 4: ENCODER → CONTADOR DE PASES ══════════ -->
+<section id="m4">
+  <div class="s-eye">// Misión 4 · Componente: Encoder</div>
+  <h2 class="s-h2">El Contador de Pases — función que acumula</h2>
+  <p class="s-sub">El encoder que contaban "clics" en Tinkercad ahora registra cada pase completado por el equipo.</p>
+  <div class="div"></div>
+
+  <div class="mision go">
+    <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
+    <p>El encoder gira y genera pulsos: cada "clic" suma o resta una unidad según el sentido de giro. Es ideal para contar eventos — en nuestro caso, pases de un equipo durante el partido.</p>
+  </div>
+
+  <div class="card open">
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#128260;</div><div class="card-inf"><div class="card-tag">Función que recorre una lista</div><div class="card-tit">contar_pases(pulsos_encoder)</div></div></div>
+    <div class="card-body">
+      <div class="code"><span class="kw">def</span> <span class="fn">contar_pases</span>(pulsos_encoder):
+    <span class="cm">"""Recibe una lista de pulsos (+1 = pase adelante, -1 = pase atrás)
+       y devuelve el total de pases efectivos."""</span>
+    total = <span class="nm">0</span>
+    <span class="kw">for</span> pulso <span class="kw">in</span> pulsos_encoder:
+        total += pulso
+    <span class="kw">return</span> total
+
+<span class="kw">def</span> <span class="fn">racha_de_pases</span>(pulsos_encoder):
+    <span class="cm">"""Devuelve la racha más larga de pases seguidos hacia adelante (+1)."""</span>
+    racha_actual = <span class="nm">0</span>
+    racha_maxima = <span class="nm">0</span>
+    <span class="kw">for</span> pulso <span class="kw">in</span> pulsos_encoder:
+        <span class="kw">if</span> pulso == <span class="nm">1</span>:
+            racha_actual += <span class="nm">1</span>
+            <span class="kw">if</span> racha_actual > racha_maxima:
+                racha_maxima = racha_actual
+        <span class="kw">else</span>:
+            racha_actual = <span class="nm">0</span>
+    <span class="kw">return</span> racha_maxima
+
+<span class="cm"># Simulación: pulsos del encoder durante una jugada</span>
+pulsos = [<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>]
+
+<span class="fn">print</span>(<span class="st">f"Pases efectivos totales: {contar_pases(pulsos)}"</span>)
+<span class="fn">print</span>(<span class="st">f"Racha máxima de pases seguidos: {racha_de_pases(pulsos)}"</span>)</div>
+      <div class="anal go"><div class="an-ico">&#9917;</div><div>Esto es exactamente el patrón "acumulador" que ya usaron con el for en T1 (el promedio de temperaturas de la maqueta), solo que ahora vive adentro de una función reutilizable.</div></div>
+    </div>
+  </div>
+
+  <div class="ejercicio">
+    <div class="ej-hdr">&#9997;&#65039; Ejercicio 4 — para resolver en la carpeta</div>
+    <ol class="ej-list">
+      <li>Escribí una función <code>posesion(pulsos_equipo_a, pulsos_equipo_b)</code> que reciba dos listas de pulsos (una por equipo) y devuelva qué equipo tuvo más pases efectivos.</li>
+      <li>Usá <code>contar_pases()</code> (de arriba) <b>adentro</b> de tu nueva función, en vez de reescribir el for.</li>
+      <li>Probala con dos listas de pulsos inventadas por vos.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══ INTEGRADOR ══════════════════════════════════════ -->
+<section id="integrador">
+  <div class="s-eye">// Cierre de la actividad</div>
+  <h2 class="s-h2">Integrador — la Cabina Técnica completa</h2>
+  <p class="s-sub">Las cuatro funciones trabajando juntas en un único programa principal, como un sistema real.</p>
+  <div class="div"></div>
+
+  <div class="card open">
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-bl">&#127919;</div><div class="card-inf"><div class="card-tag">Programa principal</div><div class="card-tit">main() llama a las 4 funciones de la cabina</div></div></div>
+    <div class="card-body">
+      <div class="code"><span class="cm"># ─── FUNCIONES DEL SISTEMA (van arriba) ───────────────────</span>
+<span class="cm"># var_check(), leer_marcador(), mostrar_resultado(),</span>
+<span class="cm"># festejar_gol(), contar_pases()  →  ya las escribiste arriba</span>
+
+<span class="cm"># ─── PROGRAMA PRINCIPAL ────────────────────────────────────</span>
+<span class="cm"># 1) Pulsador → VAR revisa la jugada</span>
+veredicto = <span class="fn">var_check</span>(<span class="nm">1</span>)
+<span class="fn">print</span>(veredicto)
+
+<span class="cm"># 2) Potenciómetros → se actualiza el marcador</span>
+goles_local     = <span class="fn">leer_marcador</span>(<span class="nm">0.62</span>)
+goles_visitante = <span class="fn">leer_marcador</span>(<span class="nm">0.41</span>)
+<span class="fn">print</span>(<span class="fn">mostrar_resultado</span>(goles_local, goles_visitante))
+
+<span class="cm"># 3) Servo → festeja si el VAR confirmó el gol</span>
+<span class="kw">if</span> <span class="st">"CONFIRMADO"</span> <span class="kw">in</span> veredicto:
+    <span class="fn">festejar_gol</span>(<span class="st">"agónico"</span>)
+
+<span class="cm"># 4) Encoder → contamos los pases de la jugada del gol</span>
+pulsos_jugada = [<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>]
+<span class="fn">print</span>(<span class="st">f"Pases en la jugada del gol: {contar_pases(pulsos_jugada)}"</span>)</div>
+      <div class="tip">&#128161; Esto es el mismo esqueleto del proyecto "Red Multi-Punto" de la maqueta: funciones chicas y específicas + un programa principal corto que las va llamando en orden. Cuando lo lleven a Arduino/ESP32, cada función equivale a una sección dentro del <code>loop()</code>.</div>
+    </div>
+  </div>
+
+  <div class="ejercicio">
+    <div class="ej-hdr">&#9997;&#65039; Desafío final (opcional, para subir nota)</div>
+    <ol class="ej-list">
+      <li>Armá un <code>while</code> que simule 3 jugadas distintas (3 lecturas distintas de pulsador y potenciómetros cada vez).</li>
+      <li>En cada vuelta, llamá a las funciones correspondientes según corresponda.</li>
+      <li>Al final del while, imprimí el marcador final del partido.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══ CHECKLIST ═══════════════════════════════════════ -->
+<section id="checklist">
+  <div class="s-eye">// Antes de entregar</div>
+  <h2 class="s-h2">Checklist de la actividad</h2>
+  <p class="s-sub">Repasá esto antes de mostrarle el código al profe.</p>
+  <div class="div"></div>
+
+  <div class="card open">
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-gr">&#9989;</div><div class="card-inf"><div class="card-tag">Checklist</div><div class="card-tit">¿Está todo listo?</div></div></div>
+    <div class="card-body">
+      <ul class="checklist">
+        <li>Escribiste las 4 funciones de las misiones (VAR, Marcador, Festejo, Pases).</li>
+        <li>Cada función tiene un <code>return</code> o un <code>print</code>, según corresponda.</li>
+        <li>Probaste cada función llamándola al menos 2 veces con valores distintos.</li>
+        <li>Resolviste los 4 ejercicios numerados de cada misión.</li>
+        <li>El programa integrador corre sin errores de principio a fin.</li>
+        <li>(Opcional) Hiciste el desafío final con el while.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Mundial de Funciones &middot; Repaso T2 &middot; <b>Escuela Industrial N&deg;9 "15 de Noviembre" &middot; El Calafate</b><br>
+  <b>Prof. Pablo Limardo &middot; Departamento ACPI &middot; Ciclo 2026</b>
+</footer>
+
+<script>
+const SECS=['intro','m1','m2','m3','m4','integrador','checklist'];
+function ir(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+function tog(hdr){hdr.closest('.card').classList.toggle('open');}
+window.addEventListener('scroll',()=>{
+  for(const id of [...SECS].reverse()){
+    const el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<=110){
+      document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+      const btn=document.querySelector(`.nb[onclick="ir('${id}')"]`);
+      if(btn)btn.classList.add('on');
+      break;
+    }
+  }
+});
+
+function updateMarcador(){
+  const pl=parseInt(document.getElementById('potLocal').value)/100;
+  const pv=parseInt(document.getElementById('potVisit').value)/100;
+  const gl=Math.round(pl*5);
+  const gv=Math.round(pv*5);
+  document.getElementById('golLocal').textContent=gl;
+  document.getElementById('golVisit').textContent=gv;
+  let ganador = gl>gv?'🏆 Gana el Local':gv>gl?'🏆 Gana el Visitante':'🤝 Empate';
+  document.getElementById('marcadorOut').textContent=
+    'pot_local     = '+pl.toFixed(2)+'\n'+
+    'pot_visitante = '+pv.toFixed(2)+'\n\n'+
+    'goles_l = leer_marcador(pot_local)        # → '+gl+'\n'+
+    'goles_v = leer_marcador(pot_visitante)    # → '+gv+'\n\n'+
+    '⚽ Local '+gl+' - '+gv+' Visitante  |  '+ganador;
+}
+updateMarcador();
+
+function toggleTheme(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  if(dark){document.documentElement.removeAttribute('data-theme');document.getElementById('themeBtn').textContent='🌙 Oscuro';localStorage.setItem('tMundial','light');}
+  else{document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeBtn').textContent='☀️ Claro';localStorage.setItem('tMundial','dark');}
+}
+if(localStorage.getItem('tMundial')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeBtn').textContent='☀️ Claro';}
+</script>
+</body>
+</html>
