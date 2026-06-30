@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mundial de Funciones · Taller de Programación 3°2° · Escuela Industrial N°9</title>
+<title>El Prode del Mundial · Taller de Programación 3°2° · Escuela Industrial N°9</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -87,6 +87,15 @@ section{margin-bottom:60px;}
 .cm{color:#8b949e;font-style:italic;}
 .kw{color:#ff7b72;font-weight:600;}
 .st{color:#a5d6ff;}.nm{color:#79c0ff;}.fn{color:#d2a8ff;font-weight:600;}
+
+.code-tabs{margin:12px 0;}
+.code-tabbar{display:flex;gap:4px;}
+.code-tabbtn{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border:1.5px solid var(--border);border-bottom:none;background:var(--bg2);color:var(--muted);cursor:pointer;border-radius:8px 8px 0 0;transition:all .15s;}
+.code-tabbtn:hover{color:var(--gr);}
+.code-tabbtn.active{background:#0d1117;color:#e6edf3;border-color:#0d1117;}
+.code-panel{display:none;}
+.code-panel.active{display:block;}
+.code-panel .code{margin-top:0;border-radius:0 8px 8px 8px;}
 
 .tbl-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;border-radius:8px;border:1px solid var(--border);}
 .tbl{width:100%;border-collapse:collapse;font-size:13px;}
@@ -209,16 +218,16 @@ footer b{color:var(--dk);}
 <header class="hero">
   <div class="hero-in">
     <div class="hero-eye"><span class="eye-dot"></span>Repaso T2 &middot; Funciones + Hardware &middot; Edici&oacute;n Mundial &#9917;</div>
-    <h1><span class="h-gr">Cabina T&eacute;cnica</span> del <span class="h-go">Mundial</span></h1>
-    <p class="hero-desc">Volvemos al ruedo despu&eacute;s de dos clases sin vernos. Repasamos <b>funciones</b> (def, par&aacute;metros, return) aplicadas a los componentes que ya armaron en Tinkercad: pulsador, potenci&oacute;metro, servo y encoder. Todo ambientado en un estadio del Mundial.</p>
+    <h1>El <span class="h-gr">Prode</span> del <span class="h-go">Mundial</span></h1>
+    <p class="hero-desc">Volvemos al ruedo despu&eacute;s de dos clases sin vernos. Vamos a construir, en c&oacute;digo, la terminal de un <b>Prode f&iacute;sico</b>: un aparato con pulsador, potenci&oacute;metro, servo y encoder donde cualquiera pronostica el resultado de un partido del Mundial. Repasamos <b>funciones en C++</b> (tipo de retorno, par&aacute;metros, return) aplicadas a cada componente.</p>
     <div class="hero-tags">
-      <span class="tag tag-gr">def / return / par&aacute;metros</span>
+      <span class="tag tag-gr">Funciones en C++</span>
       <span class="tag tag-gr">Modularizaci&oacute;n</span>
-      <span class="tag tag-go">Pulsador &rarr; VAR</span>
-      <span class="tag tag-go">Potenci&oacute;metro &rarr; Marcador</span>
-      <span class="tag tag-go">Servo &rarr; Festejo de gol</span>
-      <span class="tag tag-go">Encoder &rarr; Contador de pases</span>
-      <span class="tag tag-bl">pyFirmata</span>
+      <span class="tag tag-go">Encoder &rarr; Elegir partido</span>
+      <span class="tag tag-go">Potenci&oacute;metro &rarr; Pronosticar goles</span>
+      <span class="tag tag-go">Pulsador &rarr; Confirmar pron&oacute;stico</span>
+      <span class="tag tag-go">Servo &rarr; Indicador de puntaje</span>
+      <span class="tag tag-bl">Arduino IDE</span>
     </div>
   </div>
 </header>
@@ -226,10 +235,10 @@ footer b{color:var(--dk);}
 <nav>
   <div class="nav-in">
     <button class="nb on" onclick="ir('intro')">Recordemos</button>
-    <button class="nb" onclick="ir('m1')">M1 · VAR</button>
-    <button class="nb" onclick="ir('m2')">M2 · Marcador</button>
-    <button class="nb" onclick="ir('m3')">M3 · Festejo</button>
-    <button class="nb" onclick="ir('m4')">M4 · Pases</button>
+    <button class="nb" onclick="ir('m1')">M1 · Confirmar</button>
+    <button class="nb" onclick="ir('m2')">M2 · Pronosticar</button>
+    <button class="nb" onclick="ir('m3')">M3 · Puntaje</button>
+    <button class="nb" onclick="ir('m4')">M4 · Elegir partido</button>
     <button class="nb" onclick="ir('integrador')">Integrador</button>
     <button class="nb" onclick="ir('checklist')">Checklist</button>
   </div>
@@ -263,7 +272,7 @@ footer b{color:var(--dk);}
         <div class="tl-badge">&#9646; Lo que vimos justo antes de la pausa</div>
         <div class="tl-tit">Funciones — Módulo 08</div>
         <div class="tl-items">
-          <span>def nombre(parámetros): agrupa código reutilizable</span>
+          <span>Tipo_de_retorno nombreFuncion(parámetros) { ... } agrupa código reutilizable</span>
           <span>return devuelve un resultado y termina la función</span>
           <span>Cada función hace UNA sola cosa, y la hace bien</span>
           <span>En Tinkercad: armaron circuitos con pulsador, potenciómetro, servo y encoder</span>
@@ -273,69 +282,138 @@ footer b{color:var(--dk);}
   </div>
 
   <div class="mision">
-    <div class="mision-hdr"><span class="mision-num">El plan de hoy</span><span class="mision-tit">Armamos la Cabina Técnica del Mundial</span></div>
-    <p>Cada componente que ya probaron en Tinkercad se convierte en una <b>función</b> de nuestro sistema de cabina técnica para un partido del Mundial. Vamos a escribir 4 funciones — una por componente — y al final las combinamos en un programa principal.</p>
+    <div class="mision-hdr"><span class="mision-num">El plan de hoy</span><span class="mision-tit">Armamos la terminal del Prode</span></div>
+    <p>Cada componente que ya probaron en Tinkercad se convierte en una <b>función</b> de nuestro Prode físico del Mundial. Vamos a escribir 4 funciones — una por componente — y al final las combinamos en un programa completo que pronostica, confirma y puntúa.</p>
   </div>
 
   <div class="card open">
     <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-gr">&#128221;</div><div class="card-inf"><div class="card-tag">Repaso ultra rápido</div><div class="card-tit">Anatomía de una función</div></div></div>
     <div class="card-body">
-      <div class="code"><span class="cm">#   ↓ def   ↓ nombre        ↓ parámetros (datos que recibe)</span>
-<span class="kw">def</span> <span class="fn">analizar_pulsador</span>(estado):
-    <span class="cm">#  ← cuerpo de la función, indentado</span>
-    <span class="kw">if</span> estado == <span class="nm">1</span>:
-        resultado = <span class="st">"GOL CONFIRMADO"</span>
+      <div class="code-tabs" id="tabs-intro">
+        <div class="code-tabbar">
+          <button class="code-tabbtn active" onclick="showCodeTab('tabs-intro','arduino',this)">Arduino C++</button>
+          <button class="code-tabbtn" onclick="showCodeTab('tabs-intro','python',this)">Python</button>
+        </div>
+        <div class="code-panel active" data-lang="arduino">
+      <div class="code"><span class="cm">//   ↓ tipo de retorno   ↓ nombre                ↓ parámetros (datos que recibe)</span>
+<span class="kw">String</span> <span class="fn">confirmarPronostico</span>(<span class="kw">int</span> estadoPulsador) {
+  <span class="cm">//  ← cuerpo de la función, entre llaves</span>
+  String resultado;
+  <span class="kw">if</span> (estadoPulsador == <span class="nm">1</span>) {
+    resultado = <span class="st">"PRONÓSTICO CONFIRMADO"</span>;
+  } <span class="kw">else</span> {
+    resultado = <span class="st">"Todavía podés cambiarlo"</span>;
+  }
+  <span class="cm">//  ↓ return entrega un valor a quien llamó la función</span>
+  <span class="kw">return</span> resultado;
+}
+
+<span class="cm">// Llamada: el valor 1 va al parámetro "estado"</span>
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  String estado = <span class="fn">confirmarPronostico</span>(<span class="nm">1</span>);
+  Serial.println(estado);   <span class="cm">// → PRONÓSTICO CONFIRMADO</span>
+}</div>
+        </div>
+        <div class="code-panel" data-lang="python">
+      <div class="code"><span class="cm">#   ↓ def   ↓ nombre                ↓ parámetro (dato que recibe)</span>
+<span class="kw">def</span> <span class="fn">confirmar_pronostico</span>(estado_pulsador):
+    <span class="cm"># ← cuerpo de la función, indentado</span>
+    <span class="kw">if</span> estado_pulsador == <span class="nm">1</span>:
+        resultado = <span class="st">"PRONÓSTICO CONFIRMADO"</span>
     <span class="kw">else</span>:
-        resultado = <span class="st">"SIN REVISIÓN"</span>
-    <span class="cm">#  ↓ return entrega un valor a quien llamó la función</span>
+        resultado = <span class="st">"Todavía podés cambiarlo"</span>
+    <span class="cm"># ↓ return entrega un valor a quien llamó la función</span>
     <span class="kw">return</span> resultado
 
-<span class="cm"># Llamada: el valor 1 va al parámetro "estado"</span>
-veredicto = <span class="fn">analizar_pulsador</span>(<span class="nm">1</span>)
-<span class="fn">print</span>(veredicto)   <span class="cm"># → GOL CONFIRMADO</span></div>
-      <div class="anal"><div class="an-ico">&#127947;&#65039;</div><div>Pensalo como el VAR: un solo procedimiento (la función) que se llama cada vez que hace falta revisar una jugada, sin tener que reescribir el reglamento completo cada vez.</div></div>
+<span class="cm"># Llamada: el valor 1 va al parámetro "estado_pulsador"</span>
+estado = <span class="fn">confirmar_pronostico</span>(<span class="nm">1</span>)
+<span class="fn">print</span>(estado)   <span class="cm"># → PRONÓSTICO CONFIRMADO</span></div>
+        </div>
+      </div>
+      <div class="anal"><div class="an-ico">&#127947;&#65039;</div><div>Pensalo como el botón "Enviar" de una quiniela: un solo procedimiento (la función) que se llama cada vez que hace falta validar el pronóstico, sin reescribir esa lógica cada vez que cambia el partido.</div></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ MISIÓN 1: PULSADOR → VAR ═══════════════════════ -->
+<!-- ═══ MISIÓN 1: PULSADOR → CONFIRMAR PRONÓSTICO ══════ -->
 <section id="m1">
   <div class="s-eye">// Misión 1 · Componente: Pulsador</div>
-  <h2 class="s-h2">El VAR — función con un solo parámetro</h2>
-  <p class="s-sub">El pulsador que armaron en Tinkercad ahora es el botón del VAR: lo presiona el árbitro de video para confirmar o anular un gol.</p>
+  <h2 class="s-h2">Confirmar el Pronóstico — función con un solo parámetro</h2>
+  <p class="s-sub">El pulsador que armaron en Tinkercad ahora es el botón "Enviar" del Prode: lo presionás para bloquear tu pronóstico antes de que arranque el partido.</p>
   <div class="div"></div>
 
   <div class="mision go">
     <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
-    <p>El pulsador devuelve <code>1</code> cuando está presionado y <code>0</code> cuando no. En tu simulación lo leían con <code>pulsador.read()</code> (pyFirmata) o <code>digitalRead()</code> (Arduino C++). Hoy lo vamos a envolver en una función Python.</p>
+    <p>El pulsador devuelve <code>HIGH</code> (1) cuando está presionado y <code>LOW</code> (0) cuando no. En tu simulación lo leían con <code>digitalRead(pinPulsador)</code>. Hoy lo vamos a envolver en una función C++.</p>
   </div>
 
   <div class="card open">
-    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#128310;</div><div class="card-inf"><div class="card-tag">Función con 1 parámetro</div><div class="card-tit">var_check(estado_pulsador)</div></div></div>
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#128310;</div><div class="card-inf"><div class="card-tag">Función con 1 parámetro</div><div class="card-tit">String confirmarPronostico(int estadoPulsador)</div></div></div>
     <div class="card-body">
-      <div class="code"><span class="kw">def</span> <span class="fn">var_check</span>(estado_pulsador):
-    <span class="cm">"""Recibe el estado del pulsador (0 o 1) y devuelve el veredicto del VAR."""</span>
+      <div class="code-tabs" id="tabs-m1">
+        <div class="code-tabbar">
+          <button class="code-tabbtn active" onclick="showCodeTab('tabs-m1','arduino',this)">Arduino C++</button>
+          <button class="code-tabbtn" onclick="showCodeTab('tabs-m1','python',this)">Python</button>
+        </div>
+        <div class="code-panel active" data-lang="arduino">
+      <div class="code"><span class="kw">const</span> <span class="kw">int</span> PIN_PULSADOR = <span class="nm">2</span>;
+
+<span class="kw">String</span> <span class="fn">confirmarPronostico</span>(<span class="kw">int</span> estadoPulsador) {
+  <span class="cm">// Recibe el estado del pulsador (0 o 1) y devuelve si el pronóstico ya quedó cerrado</span>
+  <span class="kw">if</span> (estadoPulsador == <span class="nm">1</span>) {
+    <span class="kw">return</span> <span class="st">"PRONÓSTICO CONFIRMADO"</span>;
+  } <span class="kw">else</span> {
+    <span class="kw">return</span> <span class="st">"Esperando que confirmes..."</span>;
+  }
+}
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="nm">9600</span>);
+  pinMode(PIN_PULSADOR, INPUT);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">int</span> lectura = digitalRead(PIN_PULSADOR);
+  String estado = <span class="fn">confirmarPronostico</span>(lectura);
+  Serial.println(estado);
+  delay(<span class="nm">500</span>);
+}</div>
+        </div>
+        <div class="code-panel" data-lang="python">
+      <div class="code"><span class="kw">import</span> pyfirmata
+<span class="kw">import</span> time
+
+board = pyfirmata.Arduino(<span class="st">'COM3'</span>)
+pin_pulsador = board.get_pin(<span class="st">'d:2:i'</span>)
+
+<span class="kw">def</span> <span class="fn">confirmar_pronostico</span>(estado_pulsador):
+    <span class="cm"># Recibe el estado del pulsador (0 o 1) y devuelve si el pronóstico ya quedó cerrado</span>
     <span class="kw">if</span> estado_pulsador == <span class="nm">1</span>:
-        <span class="kw">return</span> <span class="st">"🟢 GOL CONFIRMADO"</span>
+        <span class="kw">return</span> <span class="st">"PRONÓSTICO CONFIRMADO"</span>
     <span class="kw">else</span>:
-        <span class="kw">return</span> <span class="st">"⚪ Esperando revisión..."</span>
+        <span class="kw">return</span> <span class="st">"Esperando que confirmes..."</span>
 
-<span class="cm"># Simulación de lecturas del pulsador a lo largo del partido</span>
-lecturas = [<span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>]
+it = pyfirmata.util.Iterator(board)
+it.start()
+pin_pulsador.enable_reporting()
 
-<span class="kw">for</span> lectura <span class="kw">in</span> lecturas:
-    veredicto = <span class="fn">var_check</span>(lectura)
-    <span class="fn">print</span>(veredicto)</div>
-      <div class="nota"><b>Conectá los puntos:</b> <code>var_check</code> es la misma lógica if/else de siempre, solo que ahora vive adentro de una función con nombre propio, lista para llamarse desde cualquier parte del programa.</div>
+<span class="kw">while</span> <span class="kw">True</span>:
+    lectura = pin_pulsador.read()
+    estado = <span class="fn">confirmar_pronostico</span>(<span class="nm">1</span> <span class="kw">if</span> lectura <span class="kw">else</span> <span class="nm">0</span>)
+    <span class="fn">print</span>(estado)
+    time.sleep(<span class="nm">0.5</span>)</div>
+        </div>
+      </div>
+      <div class="nota"><b>Conectá los puntos:</b> <code>confirmarPronostico</code> / <code>confirmar_pronostico</code> es la misma lógica if/else de siempre, solo que ahora vive adentro de una función con nombre propio, lista para llamarse cada vez que haga falta.</div>
     </div>
   </div>
 
   <div class="ejercicio">
     <div class="ej-hdr">&#9997;&#65039; Ejercicio 1 — para resolver en la carpeta</div>
     <ol class="ej-list">
-      <li>Modificá <code>var_check()</code> para que reciba <b>dos</b> parámetros: <code>estado_pulsador</code> y <code>minuto</code> (el minuto del partido).</li>
-      <li>Si el pulsador está en 1, el mensaje debe incluir el minuto: por ejemplo <code>"🟢 GOL CONFIRMADO en el minuto 73"</code>.</li>
-      <li>Probá la función con al menos 3 llamadas distintas, usando <code>print()</code>.</li>
+      <li>Modificá <code>confirmarPronostico()</code> para que reciba <b>dos</b> parámetros: <code>int estadoPulsador</code> y <code>String nombreJugador</code> (quién está pronosticando).</li>
+      <li>Si el pulsador está en 1, el String devuelto debe incluir el nombre: por ejemplo <code>"PRONÓSTICO CONFIRMADO — Lucía"</code> (concatenalo con <code>+</code>).</li>
+      <li>Probá la función con al menos 3 llamadas distintas dentro del <code>loop()</code>, usando <code>Serial.println()</code>.</li>
     </ol>
   </div>
 </section>
@@ -343,42 +421,95 @@ lecturas = [<span class="nm">0</span>, <span class="nm">0</span>, <span class="n
 <!-- ═══ MISIÓN 2: POTENCIÓMETRO → MARCADOR ═════════════ -->
 <section id="m2">
   <div class="s-eye">// Misión 2 · Componente: Potenciómetro</div>
-  <h2 class="s-h2">El Marcador — función con valores que cambian</h2>
-  <p class="s-sub">El potenciómetro que giraban en Tinkercad ahora regula el marcador del partido: cada vuelta suma un gol.</p>
+  <h2 class="s-h2">Pronosticar el Resultado — función con valores que cambian</h2>
+  <p class="s-sub">El potenciómetro que giraban en Tinkercad ahora fija cuántos goles pronosticás para cada equipo, antes de que arranque el partido.</p>
   <div class="div"></div>
 
   <div class="mision go">
     <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
-    <p>El potenciómetro devuelve un valor analógico (en pyFirmata, un número entre 0.0 y 1.0; en Arduino C++, entre 0 y 1023). Para este ejercicio simplificamos: vamos a mapear ese valor a un número de goles entre 0 y 5.</p>
+    <p>El potenciómetro devuelve un valor analógico entre <code>0</code> y <code>1023</code> con <code>analogRead()</code>. Para este ejercicio simplificamos: vamos a mapear ese valor a un pronóstico de goles entre 0 y 5 con <code>map()</code>.</p>
   </div>
 
   <div class="card open">
-    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#127919;</div><div class="card-inf"><div class="card-tag">Función con return numérico</div><div class="card-tit">leer_marcador(valor_potenciometro)</div></div></div>
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#127919;</div><div class="card-inf"><div class="card-tag">Función con return numérico</div><div class="card-tit">int leerPronostico(int valorPotenciometro)</div></div></div>
     <div class="card-body">
-      <div class="code"><span class="kw">def</span> <span class="fn">leer_marcador</span>(valor_potenciometro):
-    <span class="cm">"""Convierte una lectura 0.0–1.0 del potenciómetro en goles (0 a 5)."""</span>
+      <div class="code-tabs" id="tabs-m2">
+        <div class="code-tabbar">
+          <button class="code-tabbtn active" onclick="showCodeTab('tabs-m2','arduino',this)">Arduino C++</button>
+          <button class="code-tabbtn" onclick="showCodeTab('tabs-m2','python',this)">Python</button>
+        </div>
+        <div class="code-panel active" data-lang="arduino">
+      <div class="code"><span class="kw">const</span> <span class="kw">int</span> PIN_POT_LOCAL     = A0;
+<span class="kw">const</span> <span class="kw">int</span> PIN_POT_VISITANTE = A1;
+
+<span class="kw">int</span> <span class="fn">leerPronostico</span>(<span class="kw">int</span> valorPotenciometro) {
+  <span class="cm">// Convierte una lectura 0–1023 del potenciómetro en un pronóstico de goles (0 a 5)</span>
+  <span class="kw">int</span> goles = map(valorPotenciometro, <span class="nm">0</span>, <span class="nm">1023</span>, <span class="nm">0</span>, <span class="nm">5</span>);
+  <span class="kw">return</span> goles;
+}
+
+<span class="kw">String</span> <span class="fn">mostrarPronostico</span>(<span class="kw">int</span> golesLocal, <span class="kw">int</span> golesVisitante) {
+  <span class="cm">// Recibe el pronóstico de ambos equipos y arma el mensaje a mostrar</span>
+  String ganador;
+  <span class="kw">if</span> (golesLocal > golesVisitante) {
+    ganador = <span class="st">"ganador: Local"</span>;
+  } <span class="kw">else if</span> (golesVisitante > golesLocal) {
+    ganador = <span class="st">"ganador: Visitante"</span>;
+  } <span class="kw">else</span> {
+    ganador = <span class="st">"empate"</span>;
+  }
+  <span class="kw">return</span> <span class="st">"Tu pronóstico: Local "</span> + String(golesLocal) + <span class="st">" - "</span> + String(golesVisitante) + <span class="st">" Visitante  |  "</span> + ganador;
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">int</span> potLocal     = analogRead(PIN_POT_LOCAL);
+  <span class="kw">int</span> potVisitante = analogRead(PIN_POT_VISITANTE);
+
+  <span class="kw">int</span> golesL = <span class="fn">leerPronostico</span>(potLocal);
+  <span class="kw">int</span> golesV = <span class="fn">leerPronostico</span>(potVisitante);
+
+  Serial.println(<span class="fn">mostrarPronostico</span>(golesL, golesV));
+  delay(<span class="nm">1000</span>);
+}</div>
+        </div>
+        <div class="code-panel" data-lang="python">
+      <div class="code"><span class="kw">import</span> pyfirmata
+<span class="kw">import</span> time
+
+board = pyfirmata.Arduino(<span class="st">'COM3'</span>)
+pot_local     = board.get_pin(<span class="st">'a:0:i'</span>)
+pot_visitante = board.get_pin(<span class="st">'a:1:i'</span>)
+
+<span class="kw">def</span> <span class="fn">leer_pronostico</span>(valor_potenciometro):
+    <span class="cm"># pyFirmata devuelve un valor 0.0–1.0; lo mapeamos a goles (0 a 5)</span>
     goles = <span class="fn">round</span>(valor_potenciometro * <span class="nm">5</span>)
     <span class="kw">return</span> goles
 
-<span class="kw">def</span> <span class="fn">mostrar_resultado</span>(goles_local, goles_visitante):
-    <span class="cm">"""Recibe los goles de ambos equipos y arma el mensaje del marcador."""</span>
+<span class="kw">def</span> <span class="fn">mostrar_pronostico</span>(goles_local, goles_visitante):
+    <span class="cm"># Recibe el pronóstico de ambos equipos y arma el mensaje a mostrar</span>
     <span class="kw">if</span> goles_local > goles_visitante:
-        ganador = <span class="st">"🏆 Gana el Local"</span>
+        ganador = <span class="st">"ganador: Local"</span>
     <span class="kw">elif</span> goles_visitante > goles_local:
-        ganador = <span class="st">"🏆 Gana el Visitante"</span>
+        ganador = <span class="st">"ganador: Visitante"</span>
     <span class="kw">else</span>:
-        ganador = <span class="st">"🤝 Empate"</span>
-    <span class="kw">return</span> <span class="st">f"⚽ Local {goles_local} - {goles_visitante} Visitante  |  {ganador}"</span>
+        ganador = <span class="st">"empate"</span>
+    <span class="kw">return</span> <span class="st">f"Tu pronóstico: Local {goles_local} - {goles_visitante} Visitante  |  {ganador}"</span>
 
-<span class="cm"># Simulación: dos potenciómetros, uno por equipo</span>
-pot_local      = <span class="nm">0.62</span>
-pot_visitante  = <span class="nm">0.41</span>
+it = pyfirmata.util.Iterator(board)
+it.start()
+pot_local.enable_reporting()
+pot_visitante.enable_reporting()
 
-goles_l = <span class="fn">leer_marcador</span>(pot_local)
-goles_v = <span class="fn">leer_marcador</span>(pot_visitante)
-
-<span class="fn">print</span>(<span class="fn">mostrar_resultado</span>(goles_l, goles_v))</div>
-      <div class="anal go"><div class="an-ico">&#128260;</div><div>Fijate que <code>mostrar_resultado()</code> usa el <b>resultado</b> de <code>leer_marcador()</code> como entrada. Una función puede alimentarse de lo que devuelve otra — así arman sistemas completos, como en el proyecto de la maqueta.</div></div>
+<span class="kw">while</span> <span class="kw">True</span>:
+    valor_l = pot_local.read() <span class="kw">or</span> <span class="nm">0</span>
+    valor_v = pot_visitante.read() <span class="kw">or</span> <span class="nm">0</span>
+    goles_l = <span class="fn">leer_pronostico</span>(valor_l)
+    goles_v = <span class="fn">leer_pronostico</span>(valor_v)
+    <span class="fn">print</span>(<span class="fn">mostrar_pronostico</span>(goles_l, goles_v))
+    time.sleep(<span class="nm">1</span>)</div>
+        </div>
+      </div>
+      <div class="anal go"><div class="an-ico">&#128260;</div><div>Fijate que <code>mostrarPronostico()</code> / <code>mostrar_pronostico()</code> usa el <b>resultado</b> de <code>leerPronostico()</code> / <code>leer_pronostico()</code> como entrada. Una función puede alimentarse de lo que devuelve otra — así arman sistemas completos, como en el proyecto de la maqueta.</div></div>
     </div>
   </div>
 
@@ -390,8 +521,8 @@ goles_v = <span class="fn">leer_marcador</span>(pot_visitante)
       <div class="est-grp"><div class="est-gl">Potenciómetro Visitante</div><input type="range" class="est-slider" id="potVisit" min="0" max="100" value="41" oninput="updateMarcador()"></div>
     </div>
     <div class="est-marcador">
-      <div class="est-val"><div class="est-vlabel">Goles Local</div><div class="est-vnum" id="golLocal">3</div></div>
-      <div class="est-val"><div class="est-vlabel">Goles Visitante</div><div class="est-vnum" id="golVisit">2</div></div>
+      <div class="est-val"><div class="est-vlabel">Pronóstico Local</div><div class="est-vnum" id="golLocal">3</div></div>
+      <div class="est-val"><div class="est-vlabel">Pronóstico Visitante</div><div class="est-vnum" id="golVisit">2</div></div>
     </div>
     <div class="est-out" id="marcadorOut"></div>
   </div>
@@ -399,9 +530,9 @@ goles_v = <span class="fn">leer_marcador</span>(pot_visitante)
   <div class="ejercicio">
     <div class="ej-hdr">&#9997;&#65039; Ejercicio 2 — para resolver en la carpeta</div>
     <ol class="ej-list">
-      <li>Escribí una función <code>diferencia_goles(goles_local, goles_visitante)</code> que devuelva la diferencia en valor absoluto (usá <code>abs()</code>).</li>
-      <li>Usá esa función para imprimir un mensaje extra: si la diferencia es 3 o más, agregá <code>"📢 GOLEADA"</code> al resultado.</li>
-      <li>Probalo con los goles que te dio el simulador de arriba.</li>
+      <li>Escribí una función <code>bool acertasteResultado(int golesLocalPronosticado, int golesVisitPronosticado, int golesLocalReal, int golesVisitReal)</code> que devuelva <code>true</code> si pronosticaste el resultado exacto.</li>
+      <li>Probala con tu pronóstico del simulador de arriba contra un resultado real inventado por vos (por ejemplo, Local 3 - Visitante 1).</li>
+      <li>Imprimí por <code>Serial</code> si acertaste o no.</li>
     </ol>
   </div>
 </section>
@@ -409,44 +540,100 @@ goles_v = <span class="fn">leer_marcador</span>(pot_visitante)
 <!-- ═══ MISIÓN 3: SERVO → FESTEJO ══════════════════════ -->
 <section id="m3">
   <div class="s-eye">// Misión 3 · Componente: Servo motor</div>
-  <h2 class="s-h2">El Festejo de Gol — función con parámetros por defecto</h2>
-  <p class="s-sub">El servo que movían entre 0° y 180° en Tinkercad ahora es el brazo mecánico que festeja cada gol.</p>
+  <h2 class="s-h2">El Indicador de Puntaje — función con parámetro por defecto</h2>
+  <p class="s-sub">El servo que movían entre 0° y 180° en Tinkercad ahora es la "aguja" que marca cuántos puntos ganaste con tu pronóstico.</p>
   <div class="div"></div>
 
   <div class="mision go">
     <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
-    <p>El servo se controla con un ángulo entre 0° y 180°, usando PWM. En pyFirmata se escribe con <code>servo.write(angulo)</code>. Hoy escribimos la función que decide <b>qué tan fuerte</b> festejar según el tipo de gol.</p>
+    <p>El servo se controla con un ángulo entre 0° y 180°, usando la librería <code>Servo.h</code>. Se escribe con <code>miServo.write(angulo)</code>. Hoy escribimos la función que decide cuánto mover la aguja según los puntos que sumaste.</p>
   </div>
 
   <div class="card open">
-    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#129302;</div><div class="card-inf"><div class="card-tag">Función con parámetro por defecto</div><div class="card-tit">festejar_gol(intensidad="normal")</div></div></div>
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#129302;</div><div class="card-inf"><div class="card-tag">Función con parámetro por defecto</div><div class="card-tit">int marcarPuntaje(String nivel = "sin_puntos")</div></div></div>
     <div class="card-body">
-      <div class="code"><span class="kw">def</span> <span class="fn">festejar_gol</span>(intensidad=<span class="st">"normal"</span>):
-    <span class="cm">"""Calcula el ángulo del servo según la intensidad del festejo.
-       Si no se indica nada, usa "normal" por defecto."""</span>
-    <span class="kw">if</span> intensidad == <span class="st">"agónico"</span>:
-        angulo = <span class="nm">180</span>   <span class="cm"># festejo a pleno, último minuto</span>
-    <span class="kw">elif</span> intensidad == <span class="st">"normal"</span>:
-        angulo = <span class="nm">90</span>
-    <span class="kw">else</span>:
-        angulo = <span class="nm">45</span>    <span class="cm"># festejo contenido</span>
+      <div class="code-tabs" id="tabs-m3">
+        <div class="code-tabbar">
+          <button class="code-tabbtn active" onclick="showCodeTab('tabs-m3','arduino',this)">Arduino C++</button>
+          <button class="code-tabbtn" onclick="showCodeTab('tabs-m3','python',this)">Python</button>
+        </div>
+        <div class="code-panel active" data-lang="arduino">
+      <div class="code"><span class="cm">#include &lt;Servo.h&gt;</span>
 
-    <span class="fn">print</span>(<span class="st">f"🦾 Servo se mueve a {angulo}° — festejo {intensidad}"</span>)
+Servo servoPuntaje;
+<span class="kw">const</span> <span class="kw">int</span> PIN_SERVO = <span class="nm">9</span>;
+
+<span class="kw">int</span> <span class="fn">marcarPuntaje</span>(String nivel = <span class="st">"sin_puntos"</span>) {
+  <span class="cm">// Calcula el ángulo de la aguja según los puntos ganados con el pronóstico.
+  // Si no se indica nada, asume que no hubo puntos.</span>
+  <span class="kw">int</span> angulo;
+  <span class="kw">if</span> (nivel == <span class="st">"resultado_exacto"</span>) {
+    angulo = <span class="nm">180</span>;   <span class="cm">// acertaste el marcador exacto — 3 puntos</span>
+  } <span class="kw">else if</span> (nivel == <span class="st">"ganador"</span>) {
+    angulo = <span class="nm">90</span>;    <span class="cm">// acertaste quién gana, no el marcador — 1 punto</span>
+  } <span class="kw">else</span> {
+    angulo = <span class="nm">0</span>;     <span class="cm">// no sumaste puntos</span>
+  }
+
+  servoPuntaje.write(angulo);
+  Serial.println(<span class="st">"Aguja en "</span> + String(angulo) + <span class="st">" grados — puntaje: "</span> + nivel);
+  <span class="kw">return</span> angulo;
+}
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="nm">9600</span>);
+  servoPuntaje.attach(PIN_SERVO);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cm">// Tres formas de llamar a la misma función</span>
+  <span class="fn">marcarPuntaje</span>(<span class="st">"resultado_exacto"</span>);  <span class="cm">// acertaste todo</span>
+  delay(<span class="nm">2000</span>);
+  <span class="fn">marcarPuntaje</span>(<span class="st">"ganador"</span>);
+  delay(<span class="nm">2000</span>);
+  <span class="fn">marcarPuntaje</span>();                  <span class="cm">// usa "sin_puntos" por defecto</span>
+  delay(<span class="nm">2000</span>);
+}</div>
+        </div>
+        <div class="code-panel" data-lang="python">
+      <div class="code"><span class="kw">import</span> pyfirmata
+<span class="kw">import</span> time
+
+board = pyfirmata.Arduino(<span class="st">'COM3'</span>)
+servo_puntaje = board.get_pin(<span class="st">'d:9:s'</span>)
+
+<span class="kw">def</span> <span class="fn">marcar_puntaje</span>(nivel=<span class="st">"sin_puntos"</span>):
+    <span class="cm"># Calcula el ángulo de la aguja según los puntos ganados con el pronóstico.
+    # Si no se indica nada, asume que no hubo puntos.</span>
+    <span class="kw">if</span> nivel == <span class="st">"resultado_exacto"</span>:
+        angulo = <span class="nm">180</span>   <span class="cm"># acertaste el marcador exacto — 3 puntos</span>
+    <span class="kw">elif</span> nivel == <span class="st">"ganador"</span>:
+        angulo = <span class="nm">90</span>    <span class="cm"># acertaste quién gana, no el marcador — 1 punto</span>
+    <span class="kw">else</span>:
+        angulo = <span class="nm">0</span>     <span class="cm"># no sumaste puntos</span>
+
+    servo_puntaje.write(angulo)
+    <span class="fn">print</span>(<span class="st">f"Aguja en {angulo} grados — puntaje: {nivel}"</span>)
     <span class="kw">return</span> angulo
 
-<span class="cm"># Tres formas de llamar a la misma función</span>
-<span class="fn">festejar_gol</span>(<span class="st">"agónico"</span>)   <span class="cm"># gol en el minuto 90+5</span>
-<span class="fn">festejar_gol</span>()              <span class="cm"># usa "normal" por defecto</span>
-<span class="fn">festejar_gol</span>(<span class="st">"contenido"</span>)</div>
-      <div class="nota"><b>Novedad de hoy:</b> <code>intensidad="normal"</code> en la definición es un <b>parámetro por defecto</b>. Si no le pasás nada al llamar la función, usa ese valor automáticamente. Es la primera vez que vemos esto — probalo en tu compilador.</div>
+<span class="cm"># Tres formas de llamar a la misma función — Python también soporta valores por defecto</span>
+<span class="fn">marcar_puntaje</span>(<span class="st">"resultado_exacto"</span>)
+time.sleep(<span class="nm">2</span>)
+<span class="fn">marcar_puntaje</span>(<span class="st">"ganador"</span>)
+time.sleep(<span class="nm">2</span>)
+<span class="fn">marcar_puntaje</span>()   <span class="cm"># usa "sin_puntos" por defecto</span>
+time.sleep(<span class="nm">2</span>)</div>
+        </div>
+      </div>
+      <div class="nota"><b>Novedad de hoy:</b> tanto <code>String nivel = "sin_puntos"</code> en C++ como <code>nivel="sin_puntos"</code> en Python son <b>parámetros por defecto</b>. Si no le pasás nada al llamar la función, usa ese valor automáticamente — la idea es la misma en los dos lenguajes.</div>
     </div>
   </div>
 
   <div class="ejercicio">
     <div class="ej-hdr">&#9997;&#65039; Ejercicio 3 — para resolver en la carpeta</div>
     <ol class="ej-list">
-      <li>Agregale a <code>festejar_gol()</code> un segundo parámetro <code>repeticiones=1</code> (también por defecto).</li>
-      <li>Usá un <code>for</code> adentro de la función para repetir el mensaje de festejo esa cantidad de veces.</li>
+      <li>Agregale a <code>marcarPuntaje()</code> un segundo parámetro <code>int repeticiones = 1</code> (también por defecto).</li>
+      <li>Usá un <code>for</code> adentro de la función para repetir el movimiento del servo (con un <code>delay()</code> corto entre cada uno) esa cantidad de veces, simulando un "festejo" cuando acertás el resultado exacto.</li>
       <li>Llamá a la función de 3 formas distintas: sin argumentos, con un argumento, y con los dos.</li>
     </ol>
   </div>
@@ -455,54 +642,97 @@ goles_v = <span class="fn">leer_marcador</span>(pot_visitante)
 <!-- ═══ MISIÓN 4: ENCODER → CONTADOR DE PASES ══════════ -->
 <section id="m4">
   <div class="s-eye">// Misión 4 · Componente: Encoder</div>
-  <h2 class="s-h2">El Contador de Pases — función que acumula</h2>
-  <p class="s-sub">El encoder que contaban "clics" en Tinkercad ahora registra cada pase completado por el equipo.</p>
+  <h2 class="s-h2">Elegir el Partido — función que recorre un fixture</h2>
+  <p class="s-sub">El encoder que contaban "clics" en Tinkercad ahora navega la lista de partidos del Mundial para elegir cuál pronosticar.</p>
   <div class="div"></div>
 
   <div class="mision go">
     <div class="mision-hdr"><span class="mision-num">Contexto Tinkercad</span><span class="mision-tit">Recordá tu circuito</span></div>
-    <p>El encoder gira y genera pulsos: cada "clic" suma o resta una unidad según el sentido de giro. Es ideal para contar eventos — en nuestro caso, pases de un equipo durante el partido.</p>
+    <p>El encoder gira y genera pulsos: cada "clic" suma o resta una unidad según el sentido de giro. Acá lo usamos para mover un índice dentro del fixture (la lista de partidos) y elegir cuál pronosticar.</p>
   </div>
 
   <div class="card open">
-    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#128260;</div><div class="card-inf"><div class="card-tag">Función que recorre una lista</div><div class="card-tit">contar_pases(pulsos_encoder)</div></div></div>
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-go">&#128260;</div><div class="card-inf"><div class="card-tag">Función que recorre un arreglo</div><div class="card-tit">int elegirPartido(int pulsosEncoder[], int cantidad, int totalPartidos)</div></div></div>
     <div class="card-body">
-      <div class="code"><span class="kw">def</span> <span class="fn">contar_pases</span>(pulsos_encoder):
-    <span class="cm">"""Recibe una lista de pulsos (+1 = pase adelante, -1 = pase atrás)
-       y devuelve el total de pases efectivos."""</span>
-    total = <span class="nm">0</span>
+      <div class="code-tabs" id="tabs-m4">
+        <div class="code-tabbar">
+          <button class="code-tabbtn active" onclick="showCodeTab('tabs-m4','arduino',this)">Arduino C++</button>
+          <button class="code-tabbtn" onclick="showCodeTab('tabs-m4','python',this)">Python</button>
+        </div>
+        <div class="code-panel active" data-lang="arduino">
+      <div class="code"><span class="kw">String</span> fixture[] = {
+  <span class="st">"Argentina vs Brasil"</span>,
+  <span class="st">"Francia vs Alemania"</span>,
+  <span class="st">"España vs Italia"</span>,
+  <span class="st">"Uruguay vs Croacia"</span>
+};
+<span class="kw">const</span> <span class="kw">int</span> TOTAL_PARTIDOS = <span class="nm">4</span>;
+
+<span class="kw">int</span> <span class="fn">elegirPartido</span>(<span class="kw">int</span> pulsosEncoder[], <span class="kw">int</span> cantidad, <span class="kw">int</span> totalPartidos) {
+  <span class="cm">// Recibe los pulsos del encoder (+1 = avanza, -1 = retrocede)
+  // y devuelve el índice final dentro del fixture, sin salirse del rango</span>
+  <span class="kw">int</span> indice = <span class="nm">0</span>;
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; cantidad; i++) {
+    indice += pulsosEncoder[i];
+    <span class="kw">if</span> (indice &lt; <span class="nm">0</span>) indice = <span class="nm">0</span>;
+    <span class="kw">if</span> (indice >= totalPartidos) indice = totalPartidos - <span class="nm">1</span>;
+  }
+  <span class="kw">return</span> indice;
+}
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="nm">9600</span>);
+
+  <span class="cm">// Simulación: pulsos del encoder mientras el alumno navega el fixture</span>
+  <span class="kw">int</span> pulsos[] = {<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>};
+  <span class="kw">int</span> cantidadPulsos = <span class="nm">5</span>;
+
+  <span class="kw">int</span> indiceElegido = <span class="fn">elegirPartido</span>(pulsos, cantidadPulsos, TOTAL_PARTIDOS);
+  Serial.println(<span class="st">"Partido elegido: "</span> + fixture[indiceElegido]);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cm">// vacío — esta misión corre una sola vez en setup()</span>
+}</div>
+        </div>
+        <div class="code-panel" data-lang="python">
+      <div class="code">fixture = [
+    <span class="st">"Argentina vs Brasil"</span>,
+    <span class="st">"Francia vs Alemania"</span>,
+    <span class="st">"España vs Italia"</span>,
+    <span class="st">"Uruguay vs Croacia"</span>
+]
+TOTAL_PARTIDOS = <span class="fn">len</span>(fixture)
+
+<span class="kw">def</span> <span class="fn">elegir_partido</span>(pulsos_encoder, total_partidos):
+    <span class="cm"># Recibe una lista de pulsos del encoder (+1 = avanza, -1 = retrocede)
+    # y devuelve el índice final dentro del fixture, sin salirse del rango</span>
+    indice = <span class="nm">0</span>
     <span class="kw">for</span> pulso <span class="kw">in</span> pulsos_encoder:
-        total += pulso
-    <span class="kw">return</span> total
+        indice += pulso
+        <span class="kw">if</span> indice < <span class="nm">0</span>:
+            indice = <span class="nm">0</span>
+        <span class="kw">if</span> indice >= total_partidos:
+            indice = total_partidos - <span class="nm">1</span>
+    <span class="kw">return</span> indice
 
-<span class="kw">def</span> <span class="fn">racha_de_pases</span>(pulsos_encoder):
-    <span class="cm">"""Devuelve la racha más larga de pases seguidos hacia adelante (+1)."""</span>
-    racha_actual = <span class="nm">0</span>
-    racha_maxima = <span class="nm">0</span>
-    <span class="kw">for</span> pulso <span class="kw">in</span> pulsos_encoder:
-        <span class="kw">if</span> pulso == <span class="nm">1</span>:
-            racha_actual += <span class="nm">1</span>
-            <span class="kw">if</span> racha_actual > racha_maxima:
-                racha_maxima = racha_actual
-        <span class="kw">else</span>:
-            racha_actual = <span class="nm">0</span>
-    <span class="kw">return</span> racha_maxima
+<span class="cm"># Simulación: pulsos del encoder mientras el alumno navega el fixture</span>
+pulsos = [<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>]
 
-<span class="cm"># Simulación: pulsos del encoder durante una jugada</span>
-pulsos = [<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>]
-
-<span class="fn">print</span>(<span class="st">f"Pases efectivos totales: {contar_pases(pulsos)}"</span>)
-<span class="fn">print</span>(<span class="st">f"Racha máxima de pases seguidos: {racha_de_pases(pulsos)}"</span>)</div>
-      <div class="anal go"><div class="an-ico">&#9917;</div><div>Esto es exactamente el patrón "acumulador" que ya usaron con el for en T1 (el promedio de temperaturas de la maqueta), solo que ahora vive adentro de una función reutilizable.</div></div>
+indice_elegido = <span class="fn">elegir_partido</span>(pulsos, TOTAL_PARTIDOS)
+<span class="fn">print</span>(<span class="st">f"Partido elegido: {fixture[indice_elegido]}"</span>)</div>
+        </div>
+      </div>
+      <div class="anal go"><div class="an-ico">&#9917;</div><div>Es el mismo patrón "acumulador" del for de T1, solo que ahora el resultado se usa como <b>índice</b> de un arreglo/lista de Strings. En C++, cuando un arreglo es parámetro, hay que pasar también su tamaño aparte (acá <code>cantidad</code>); en Python no hace falta, porque las listas ya "saben" su tamaño.</div></div>
     </div>
   </div>
 
   <div class="ejercicio">
     <div class="ej-hdr">&#9997;&#65039; Ejercicio 4 — para resolver en la carpeta</div>
     <ol class="ej-list">
-      <li>Escribí una función <code>posesion(pulsos_equipo_a, pulsos_equipo_b)</code> que reciba dos listas de pulsos (una por equipo) y devuelva qué equipo tuvo más pases efectivos.</li>
-      <li>Usá <code>contar_pases()</code> (de arriba) <b>adentro</b> de tu nueva función, en vez de reescribir el for.</li>
-      <li>Probala con dos listas de pulsos inventadas por vos.</li>
+      <li>Ampliá el <code>fixture[]</code> a 6 partidos inventados por vos.</li>
+      <li>Escribí una función <code>void mostrarFixture(String partidos[], int total)</code> que recorra el arreglo completo e imprima cada partido numerado (1, 2, 3...) por <code>Serial</code>.</li>
+      <li>Llamá a <code>mostrarFixture()</code> antes de elegir el partido, para que el "jugador" vea las opciones disponibles.</li>
     </ol>
   </div>
 </section>
@@ -510,44 +740,133 @@ pulsos = [<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm"
 <!-- ═══ INTEGRADOR ══════════════════════════════════════ -->
 <section id="integrador">
   <div class="s-eye">// Cierre de la actividad</div>
-  <h2 class="s-h2">Integrador — la Cabina Técnica completa</h2>
+  <h2 class="s-h2">Integrador — el Prode completo</h2>
   <p class="s-sub">Las cuatro funciones trabajando juntas en un único programa principal, como un sistema real.</p>
   <div class="div"></div>
 
   <div class="card open">
-    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-bl">&#127919;</div><div class="card-inf"><div class="card-tag">Programa principal</div><div class="card-tit">main() llama a las 4 funciones de la cabina</div></div></div>
+    <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-bl">&#127919;</div><div class="card-inf"><div class="card-tag">Programa principal</div><div class="card-tit">setup() y loop() del Prode completo</div></div></div>
     <div class="card-body">
-      <div class="code"><span class="cm"># ─── FUNCIONES DEL SISTEMA (van arriba) ───────────────────</span>
-<span class="cm"># var_check(), leer_marcador(), mostrar_resultado(),</span>
-<span class="cm"># festejar_gol(), contar_pases()  →  ya las escribiste arriba</span>
+      <div class="code-tabs" id="tabs-int">
+        <div class="code-tabbar">
+          <button class="code-tabbtn active" onclick="showCodeTab('tabs-int','arduino',this)">Arduino C++</button>
+          <button class="code-tabbtn" onclick="showCodeTab('tabs-int','python',this)">Python</button>
+        </div>
+        <div class="code-panel active" data-lang="arduino">
+      <div class="code"><span class="cm">// ─── LIBRERÍAS Y FUNCIONES (van arriba del setup) ──────────</span>
+<span class="cm">// elegirPartido(), leerPronostico(), mostrarPronostico(),</span>
+<span class="cm">// confirmarPronostico(), marcarPuntaje()  →  ya las escribiste arriba</span>
+<span class="cm">#include &lt;Servo.h&gt;</span>
+Servo servoPuntaje;
 
-<span class="cm"># ─── PROGRAMA PRINCIPAL ────────────────────────────────────</span>
-<span class="cm"># 1) Pulsador → VAR revisa la jugada</span>
-veredicto = <span class="fn">var_check</span>(<span class="nm">1</span>)
-<span class="fn">print</span>(veredicto)
+<span class="kw">String</span> fixture[] = {<span class="st">"Argentina vs Brasil"</span>, <span class="st">"Francia vs Alemania"</span>, <span class="st">"España vs Italia"</span>};
+<span class="kw">const</span> <span class="kw">int</span> TOTAL_PARTIDOS = <span class="nm">3</span>;
 
-<span class="cm"># 2) Potenciómetros → se actualiza el marcador</span>
-goles_local     = <span class="fn">leer_marcador</span>(<span class="nm">0.62</span>)
-goles_visitante = <span class="fn">leer_marcador</span>(<span class="nm">0.41</span>)
-<span class="fn">print</span>(<span class="fn">mostrar_resultado</span>(goles_local, goles_visitante))
+<span class="kw">const</span> <span class="kw">int</span> PIN_PULSADOR      = <span class="nm">2</span>;
+<span class="kw">const</span> <span class="kw">int</span> PIN_POT_LOCAL     = A0;
+<span class="kw">const</span> <span class="kw">int</span> PIN_POT_VISITANTE = A1;
+<span class="kw">const</span> <span class="kw">int</span> PIN_SERVO         = <span class="nm">9</span>;
 
-<span class="cm"># 3) Servo → festeja si el VAR confirmó el gol</span>
-<span class="kw">if</span> <span class="st">"CONFIRMADO"</span> <span class="kw">in</span> veredicto:
-    <span class="fn">festejar_gol</span>(<span class="st">"agónico"</span>)
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  Serial.begin(<span class="nm">9600</span>);
+  pinMode(PIN_PULSADOR, INPUT);
+  servoPuntaje.attach(PIN_SERVO);
+}
 
-<span class="cm"># 4) Encoder → contamos los pases de la jugada del gol</span>
-pulsos_jugada = [<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, -<span class="nm">1</span>, <span class="nm">1</span>]
-<span class="fn">print</span>(<span class="st">f"Pases en la jugada del gol: {contar_pases(pulsos_jugada)}"</span>)</div>
-      <div class="tip">&#128161; Esto es el mismo esqueleto del proyecto "Red Multi-Punto" de la maqueta: funciones chicas y específicas + un programa principal corto que las va llamando en orden. Cuando lo lleven a Arduino/ESP32, cada función equivale a una sección dentro del <code>loop()</code>.</div>
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cm">// 1) Encoder → elegimos el partido (simulado acá con pulsos fijos)</span>
+  <span class="kw">int</span> pulsosEncoder[] = {<span class="nm">1</span>, <span class="nm">1</span>};
+  <span class="kw">int</span> indice = <span class="fn">elegirPartido</span>(pulsosEncoder, <span class="nm">2</span>, TOTAL_PARTIDOS);
+  Serial.println(<span class="st">"Partido: "</span> + fixture[indice]);
+
+  <span class="cm">// 2) Potenciómetros → armamos el pronóstico</span>
+  <span class="kw">int</span> golesLocal     = <span class="fn">leerPronostico</span>(analogRead(PIN_POT_LOCAL));
+  <span class="kw">int</span> golesVisitante = <span class="fn">leerPronostico</span>(analogRead(PIN_POT_VISITANTE));
+  Serial.println(<span class="fn">mostrarPronostico</span>(golesLocal, golesVisitante));
+
+  <span class="cm">// 3) Pulsador → confirmamos el pronóstico</span>
+  String estado = <span class="fn">confirmarPronostico</span>(digitalRead(PIN_PULSADOR));
+  Serial.println(estado);
+
+  <span class="cm">// 4) Servo → una vez jugado el partido, marcamos el puntaje obtenido</span>
+  <span class="kw">int</span> golesRealLocal     = <span class="nm">2</span>;  <span class="cm">// resultado real (vendría de otra fuente)</span>
+  <span class="kw">int</span> golesRealVisitante = <span class="nm">1</span>;
+
+  <span class="kw">if</span> (golesLocal == golesRealLocal &amp;&amp; golesVisitante == golesRealVisitante) {
+    <span class="fn">marcarPuntaje</span>(<span class="st">"resultado_exacto"</span>);
+  } <span class="kw">else if</span> ((golesLocal > golesVisitante &amp;&amp; golesRealLocal > golesRealVisitante) ||
+             (golesVisitante > golesLocal &amp;&amp; golesRealVisitante > golesRealLocal)) {
+    <span class="fn">marcarPuntaje</span>(<span class="st">"ganador"</span>);
+  } <span class="kw">else</span> {
+    <span class="fn">marcarPuntaje</span>();
+  }
+
+  delay(<span class="nm">3000</span>);
+}</div>
+        </div>
+        <div class="code-panel" data-lang="python">
+      <div class="code"><span class="kw">import</span> pyfirmata
+<span class="kw">import</span> time
+
+board = pyfirmata.Arduino(<span class="st">'COM3'</span>)
+pin_pulsador  = board.get_pin(<span class="st">'d:2:i'</span>)
+pot_local     = board.get_pin(<span class="st">'a:0:i'</span>)
+pot_visitante = board.get_pin(<span class="st">'a:1:i'</span>)
+servo_puntaje = board.get_pin(<span class="st">'d:9:s'</span>)
+
+it = pyfirmata.util.Iterator(board)
+it.start()
+pin_pulsador.enable_reporting()
+pot_local.enable_reporting()
+pot_visitante.enable_reporting()
+
+fixture = [<span class="st">"Argentina vs Brasil"</span>, <span class="st">"Francia vs Alemania"</span>, <span class="st">"España vs Italia"</span>]
+TOTAL_PARTIDOS = <span class="fn">len</span>(fixture)
+
+<span class="cm"># (acá van las funciones: elegir_partido, leer_pronostico, mostrar_pronostico,
+#  confirmar_pronostico, marcar_puntaje  →  ya las escribiste arriba)</span>
+
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="cm"># 1) Encoder → elegimos el partido (simulado acá con pulsos fijos)</span>
+    pulsos_encoder = [<span class="nm">1</span>, <span class="nm">1</span>]
+    indice = <span class="fn">elegir_partido</span>(pulsos_encoder, TOTAL_PARTIDOS)
+    <span class="fn">print</span>(<span class="st">f"Partido: {fixture[indice]}"</span>)
+
+    <span class="cm"># 2) Potenciómetros → armamos el pronóstico</span>
+    goles_local     = <span class="fn">leer_pronostico</span>(pot_local.read() <span class="kw">or</span> <span class="nm">0</span>)
+    goles_visitante = <span class="fn">leer_pronostico</span>(pot_visitante.read() <span class="kw">or</span> <span class="nm">0</span>)
+    <span class="fn">print</span>(<span class="fn">mostrar_pronostico</span>(goles_local, goles_visitante))
+
+    <span class="cm"># 3) Pulsador → confirmamos el pronóstico</span>
+    lectura = pin_pulsador.read()
+    estado = <span class="fn">confirmar_pronostico</span>(<span class="nm">1</span> <span class="kw">if</span> lectura <span class="kw">else</span> <span class="nm">0</span>)
+    <span class="fn">print</span>(estado)
+
+    <span class="cm"># 4) Servo → una vez jugado el partido, marcamos el puntaje obtenido</span>
+    goles_real_local     = <span class="nm">2</span>   <span class="cm"># resultado real (vendría de otra fuente)</span>
+    goles_real_visitante = <span class="nm">1</span>
+
+    <span class="kw">if</span> goles_local == goles_real_local <span class="kw">and</span> goles_visitante == goles_real_visitante:
+        <span class="fn">marcar_puntaje</span>(<span class="st">"resultado_exacto"</span>)
+    <span class="kw">elif</span> (goles_local > goles_visitante <span class="kw">and</span> goles_real_local > goles_real_visitante) <span class="kw">or</span> \
+          (goles_visitante > goles_local <span class="kw">and</span> goles_real_visitante > goles_real_local):
+        <span class="fn">marcar_puntaje</span>(<span class="st">"ganador"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">marcar_puntaje</span>()
+
+    time.sleep(<span class="nm">3</span>)</div>
+        </div>
+      </div>
+      <div class="tip">&#128161; Esto es el mismo esqueleto del proyecto "Red Multi-Punto" de la maqueta: funciones chicas y específicas + un <code>loop()</code> (o <code>while True</code>) corto que las va llamando en orden. En Arduino corre directo en el microcontrolador; en Python corre en la PC y se comunica con la placa por <b>pyFirmata</b> — el puente que ya usaron en T2.</div>
     </div>
   </div>
 
   <div class="ejercicio">
     <div class="ej-hdr">&#9997;&#65039; Desafío final (opcional, para subir nota)</div>
     <ol class="ej-list">
-      <li>Armá un <code>while</code> que simule 3 jugadas distintas (3 lecturas distintas de pulsador y potenciómetros cada vez).</li>
+      <li>Armá un <code>while</code> (o un <code>for</code>) dentro del <code>loop()</code> que simule 3 jugadas distintas (3 lecturas distintas de pulsador y potenciómetros cada vez, usando un arreglo).</li>
       <li>En cada vuelta, llamá a las funciones correspondientes según corresponda.</li>
-      <li>Al final del while, imprimí el marcador final del partido.</li>
+      <li>Al final, imprimí por <code>Serial</code> el marcador final del partido.</li>
     </ol>
   </div>
 </section>
@@ -563,7 +882,7 @@ pulsos_jugada = [<span class="nm">1</span>, <span class="nm">1</span>, <span cla
     <div class="card-hdr" onclick="tog(this)"><div class="card-ico ico-gr">&#9989;</div><div class="card-inf"><div class="card-tag">Checklist</div><div class="card-tit">¿Está todo listo?</div></div></div>
     <div class="card-body">
       <ul class="checklist">
-        <li>Escribiste las 4 funciones de las misiones (VAR, Marcador, Festejo, Pases).</li>
+        <li>Escribiste las 4 funciones de las misiones (Confirmar, Pronosticar, Puntaje, Elegir partido).</li>
         <li>Cada función tiene un <code>return</code> o un <code>print</code>, según corresponda.</li>
         <li>Probaste cada función llamándola al menos 2 veces con valores distintos.</li>
         <li>Resolviste los 4 ejercicios numerados de cada misión.</li>
@@ -577,7 +896,7 @@ pulsos_jugada = [<span class="nm">1</span>, <span class="nm">1</span>, <span cla
 </main>
 
 <footer>
-  Mundial de Funciones &middot; Repaso T2 &middot; <b>Escuela Industrial N&deg;9 "15 de Noviembre" &middot; El Calafate</b><br>
+  El Prode del Mundial &middot; Repaso T2 &middot; <b>Escuela Industrial N&deg;9 "15 de Noviembre" &middot; El Calafate</b><br>
   <b>Prof. Pablo Limardo &middot; Departamento ACPI &middot; Ciclo 2026</b>
 </footer>
 
@@ -585,6 +904,13 @@ pulsos_jugada = [<span class="nm">1</span>, <span class="nm">1</span>, <span cla
 const SECS=['intro','m1','m2','m3','m4','integrador','checklist'];
 function ir(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
 function tog(hdr){hdr.closest('.card').classList.toggle('open');}
+function showCodeTab(groupId,lang,btn){
+  const g=document.getElementById(groupId);
+  g.querySelectorAll('.code-panel').forEach(p=>p.classList.remove('active'));
+  g.querySelector('.code-panel[data-lang="'+lang+'"]').classList.add('active');
+  g.querySelectorAll('.code-tabbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
 window.addEventListener('scroll',()=>{
   for(const id of [...SECS].reverse()){
     const el=document.getElementById(id);
@@ -598,19 +924,19 @@ window.addEventListener('scroll',()=>{
 });
 
 function updateMarcador(){
-  const pl=parseInt(document.getElementById('potLocal').value)/100;
-  const pv=parseInt(document.getElementById('potVisit').value)/100;
-  const gl=Math.round(pl*5);
-  const gv=Math.round(pv*5);
+  const pl=parseInt(document.getElementById('potLocal').value);
+  const pv=parseInt(document.getElementById('potVisit').value);
+  const gl=Math.round((pl/100)*5);
+  const gv=Math.round((pv/100)*5);
   document.getElementById('golLocal').textContent=gl;
   document.getElementById('golVisit').textContent=gv;
-  let ganador = gl>gv?'🏆 Gana el Local':gv>gl?'🏆 Gana el Visitante':'🤝 Empate';
+  let ganador = gl>gv?'Gana el Local':gv>gl?'Gana el Visitante':'Empate';
   document.getElementById('marcadorOut').textContent=
-    'pot_local     = '+pl.toFixed(2)+'\n'+
-    'pot_visitante = '+pv.toFixed(2)+'\n\n'+
-    'goles_l = leer_marcador(pot_local)        # → '+gl+'\n'+
-    'goles_v = leer_marcador(pot_visitante)    # → '+gv+'\n\n'+
-    '⚽ Local '+gl+' - '+gv+' Visitante  |  '+ganador;
+    'potLocal     = analogRead(A0);   // → '+Math.round(pl*10.23)+'\n'+
+    'potVisitante = analogRead(A1);   // → '+Math.round(pv*10.23)+'\n\n'+
+    'golesL = leerPronostico(potLocal);        // → '+gl+'\n'+
+    'golesV = leerPronostico(potVisitante);    // → '+gv+'\n\n'+
+    'Local '+gl+' - '+gv+' Visitante  |  '+ganador;
 }
 updateMarcador();
 
